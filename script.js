@@ -408,6 +408,7 @@ editCommentForm.addEventListener('submit', async (event) => {
 async function deleteAllReviews() {
     if (confirm("Are you sure you want to delete all reviews?")) {
         try {
+            /* added for loop to loop over eeach item in the array then added the await fetch request to delete each review with the corresponding id*/
             for( item of allCurrentReviews){
             const response = await fetch(`http://localhost:3000/reviews/${item.id}`, {
                 method: 'DELETE'

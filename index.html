@@ -4,59 +4,74 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movie Review App</title>
+
+    <!-- Linking Bootstrap CSS for responsive design and styling -->
     <link
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
+    <!-- Linking Font Awesome for star rating icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <!--Used internal CSS for the body-->
+
+    <!-- Internal CSS for body and components styling -->
     <style>
+      /* Background settings for the body */
       body {
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        color: white;
+        color: white; /* Default text color */
       }
 
+      /* Styling the main container */
       .container {
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
         padding: 20px;
-        border-radius: 10px;
+        border-radius: 10px; /* Rounded corners */
         margin-top: 50px;
       }
 
+      /* Styling individual review cards */
       .review-card {
-        margin-bottom: 20px;
-        color: black;
+        margin-bottom: 20px; /* Space between review cards */
+        color: black; /* Text color inside reviews */
       }
 
+      /* Styling for star rating icons */
       .star {
-        font-size: 2rem;
-        cursor: pointer;
-        color: #ddd;
+        font-size: 2rem; /* Larger star icons */
+        cursor: pointer; /* Hand cursor to indicate clickability */
+        color: #ddd; /* Default star color */
       }
 
+      /* Styling for selected stars */
       .star.selected {
-        color: gold;
+        color: gold; /* Gold color when star is selected */
       }
 
+      /* Styling for comment containers under reviews */
       .comment-container {
         margin-top: 10px;
         padding: 5px;
-        border: 1px solid #ddd;
+        border: 1px solid #ddd; /* Light border around comments */
         border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.1); /* Light transparent background */
       }
     </style>
   </head>
-  <body>
-    <div class="container mt-5">
-      <h1 class="text-center">Movie Review App</h1>
 
+  <body>
+    <!-- Main container to hold the entire app content -->
+    <div class="container mt-5">
+      <h1 class="text-center">Movie Review App</h1> <!-- App title -->
+
+      <!-- Review form for adding a new review -->
       <form id="reviewForm">
+        <!-- Movie title input field -->
         <div class="form-group">
           <input
             type="text"
@@ -66,16 +81,23 @@
             required
           />
         </div>
+
+        <!-- Star rating input with hidden field to store the selected rating -->
         <div class="form-group">
+          <!-- Displaying clickable stars for rating -->
           <div id="starRating" class="mb-2">
+            <!-- Each star is assigned a data-value for capturing the rating -->
             <i class="fas fa-star star" data-value="1"></i>
             <i class="fas fa-star star" data-value="2"></i>
             <i class="fas fa-star star" data-value="3"></i>
             <i class="fas fa-star star" data-value="4"></i>
             <i class="fas fa-star star" data-value="5"></i>
           </div>
+          <!-- Hidden input to store the selected rating -->
           <input type="hidden" id="rating" required />
         </div>
+
+        <!-- Text area for writing a detailed review -->
         <div class="form-group">
           <textarea
             id="reviewText"
@@ -84,15 +106,18 @@
             required
           ></textarea>
         </div>
+
+        <!-- Submit button for adding the review -->
         <button type="submit" class="btn btn-primary">Submit Review</button>
       </form>
 
-      
-
+      <!-- Section to display reviews -->
       <h2 class="mt-5">Reviews</h2>
+      <!-- Reviews list where submitted reviews will be appended -->
       <div id="reviewsList"></div>
     </div>
 
+    <!-- Modal for editing an existing review -->
     <div
       class="modal fade"
       id="editReviewModal"
@@ -103,6 +128,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
+            <!-- Modal title and close button -->
             <h5 class="modal-title" id="editReviewModalLabel">Edit Review</h5>
             <button
               type="button"
@@ -113,9 +139,13 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+          <!-- Modal body containing the edit review form -->
           <div class="modal-body">
             <form id="editReviewForm">
+              <!-- Hidden field to track the ID of the review being edited -->
               <input type="hidden" id="editReviewId" />
+
+              <!-- Movie title input field for editing -->
               <div class="form-group">
                 <input
                   type="text"
@@ -125,16 +155,22 @@
                   required
                 />
               </div>
+
+              <!-- Star rating input for editing the review's rating -->
               <div class="form-group">
                 <div id="editStarRating" class="mb-2">
+                  <!-- Stars with the same logic as the add review form -->
                   <i class="fas fa-star star" data-value="1"></i>
                   <i class="fas fa-star star" data-value="2"></i>
                   <i class="fas fa-star star" data-value="3"></i>
                   <i class="fas fa-star star" data-value="4"></i>
                   <i class="fas fa-star star" data-value="5"></i>
                 </div>
+                <!-- Hidden field to track the selected rating for the edit -->
                 <input type="hidden" id="editRating" required />
               </div>
+
+              <!-- Text area to edit the review content -->
               <div class="form-group">
                 <textarea
                   id="editReviewText"
@@ -143,6 +179,8 @@
                   required
                 ></textarea>
               </div>
+
+              <!-- Save button to submit edited review -->
               <button type="submit" class="btn btn-primary">
                 Save Changes
               </button>
@@ -152,34 +190,44 @@
       </div>
     </div>
 
- <!-- Edit Comment Modal -->
-<div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="editCommentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <!-- Modal for editing an existing comment -->
+    <div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editCommentModalLabel">Edit Comment</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editCommentForm">
-                    <input type="hidden" id="editCommentId" />
-                    <input type="hidden" id="editCommentReviewId" /> 
-                    <div class="form-group">
-                        <textarea id="editCommentText" class="form-control" placeholder="Edit your comment" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success">Save Changes</button>
-                </form>
-            </div>
+          <div class="modal-header">
+            <!-- Modal title and close button -->
+            <h5 class="modal-title" id="editCommentModalLabel">Edit Comment</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!-- Modal body containing the edit comment form -->
+          <div class="modal-body">
+            <form id="editCommentForm">
+              <!-- Hidden fields to track the comment ID and the review it belongs to -->
+              <input type="hidden" id="editCommentId" />
+              <input type="hidden" id="editCommentReviewId" />
+
+              <!-- Text area for editing the comment content -->
+              <div class="form-group">
+                <textarea id="editCommentText" class="form-control" placeholder="Edit your comment" required></textarea>
+              </div>
+
+              <!-- Save button to submit edited comment -->
+              <button type="submit" class="btn btn-success">Save Changes</button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-
+    <!-- Including jQuery and Bootstrap JS for modal and form handling -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- External JavaScript file for app functionality -->
     <script src="script.js"></script>
   </body>
 </html>
+
